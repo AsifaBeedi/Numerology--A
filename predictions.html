@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predictions - Numerology Prediction App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #1a1a2e, #162447);
+            color: #e0e0e0;
+            text-align: center;
+        }
+        header {
+            background: url('https://www.hdwallpaper.nu/wp-content/uploads/2015/02/476268.jpg') no-repeat center center;
+            background-size: cover;
+            padding: 20px;
+            border-radius: 10px;
+            color: white;
+        }
+        nav {
+            background-color: #0f3460;
+            padding: 10px;
+            border-radius: 10px;
+        }
+        nav a {
+            color: #e0e0e0;
+            text-decoration: none;
+            padding: 10px;
+            margin: 0 10px;
+        }
+        nav a:hover {
+            color: #5D3FD3;
+        }
+        .container {
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #162447;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+        input[type="date"] {
+            width: 50%;
+            padding: 10px;
+            margin: 10px 0;
+            background-color: #0f3460;
+            color: #e0e0e0;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 3px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #prediction-result {
+            margin-top: 20px;
+            background-color: #1a1a2e;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        h3 {
+            color: #5D3FD3;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h2> "NUMEROLOGY STARTS FROM WHERE THE HARDWORK ENDS."</h2>
+        <h1>Your Numerology Predictions:</h1>
+    </header>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="predictions.html">Predictions</a>
+        <a href="resources.html">Learning Resources</a>
+        <a href="spirituality.html">Spirituality</a>
+        <a href="admin.html">Admin Login</a>
+    </nav>
+    <div class="container">
+        <h2>Your Personal Numerology Forecast</h2>
+        <form id="prediction-form">
+            <input type="date" id="dob" required>
+            <button type="submit">Calculate</button>
+        </form>
+        <div id="prediction-result"></div>
+    </div>
+    <script>
+        function calculateLifePathNumber(dob) {
+            let numbers = dob.replace(/-/g, '').split('').map(Number);
+            while (numbers.length > 1) {
+                numbers = String(numbers.reduce((a, b) => a + b, 0)).split('').map(Number);
+            }
+            return numbers[0];
+        }
+
+        function calculateBhagyank(dob) {
+            let numbers = dob.replace(/-/g, '').split('').map(Number);
+            while (numbers.length > 1) {
+                numbers = String(numbers.reduce((a, b) => a + b, 0)).split('').map(Number);
+            }
+            return numbers[0];
+        }
+
+        function calculateMoolank(day) {
+            let numbers = day.split('').map(Number);
+            while (numbers.length > 1) {
+                numbers = String(numbers.reduce((a, b) => a + b, 0)).split('').map(Number);
+            }
+            return numbers[0];
+        }
+
+        function numerologyInfo(number) {
+            const info = {
+                1: "You are a leader, independent, and individualistic person.",
+                2: "You are diplomatic, sensitive, and a peacemaker.",
+                3: "You are creative, expressive, and sociable person.",
+                4: "You are practical, disciplined, and hardworking.",
+                5: "You are adventurous, energetic, and freedom-loving.",
+                6: "You are nurturing, responsible, and community-oriented.",
+                7: "You are analytical, introspective, and spiritual.",
+                8: "You are ambitious, efficient, and goal-oriented.",
+                9: "You are compassionate, idealistic, and humanitarian."
+            };
+            return info[number] || "Invalid number";
+        }
+
+        function numerologicalGrid(dob) {
+            const digits = dob.replace(/-/g, '').split('').map(Number);
+            const planes = {
+                "Plane of Mind": [4, 9, 2],
+                "Plane of Heart": [3, 5, 7],
+                "Plane of Practical": [8, 1, 6],
+                "Plane of Vision": [4, 3, 8],
+                "Plane of Will": [9, 5, 1],
+                "Plane of Action": [2, 7, 6],
+                "1st Rajyog": [4, 5, 6],
+                "2nd Rajyog": [2, 5, 8]
+            };
+            const gridResult = {};
+            const comments = {
+                33: "Weak influence",
+                67: "Moderate influence",
+                100: "Strong influence"
+            };
+
+            for (const [plane, numbers] of Object.entries(planes)) {
+                const count = numbers.filter(number => digits.includes(number)).length;
+                const fillPercentage = (count / numbers.length) * 100;
+                const fillComment = comments[Math.round(fillPercentage)] || "No influence";
+                gridResult[plane] = {
+                    "Numbers Present": count,
+                    "Fill Percentage": fillPercentage,
+                    "Comment": fillComment
+                };
+            }
+
+            return gridResult;
+        }
+
+        function printNumerologicalGrid(grid) {
+            let result = '';
+            for (const [plane, details] of Object.entries(grid)) {
+                result += `<h3>${plane}:</h3>`;
+                result += `<p>Numbers Present: ${details['Numbers Present']}</p>`;
+                result += `<p>Fill Percentage: ${details['Fill Percentage']}%</p>`;
+                result += `<p>Comment: ${details['Comment']}</p>`;
+            }
+            return result;
+        }
+
+        document.getElementById('prediction-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const dob = document.getElementById('dob').value;
+            const year = dob.split('-')[0];
+            const month = dob.split('-')[1];
+            const day = dob.split('-')[2];
+            
+            const bhagyank = calculateBhagyank(dob);
+            const moolank = calculateMoolank(day);
+            
+            const bhagyankInfo = numerologyInfo(bhagyank);
+            const moolankInfo = numerologyInfo(moolank);
+            const grid = numerologicalGrid(dob);
+            const gridInfo = printNumerologicalGrid(grid);
+            
+            const result = `
+                <h3>Bhagyank (Life Path Number): ${bhagyank}</h3>
+                <p>${bhagyankInfo}</p>
+                <h3>Moolank (Destiny Number): ${moolank}</h3>
+                <p>${moolankInfo}</p>
+                ${gridInfo}
+            `;
+            document.getElementById('prediction-result').innerHTML = result;
+            
+        });
+        
+    </script>
+</body>
+</html>
